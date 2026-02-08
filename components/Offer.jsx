@@ -62,6 +62,7 @@
 import React from "react";
 import Image from "next/image";
 import { IoCartOutline } from "react-icons/io5";
+import Link from "next/link";
 
 const Offer = () => {
   return (
@@ -116,14 +117,14 @@ const Offer = () => {
           </p>
 
           <div className="flex justify-center lg:justify-start">
-            <button
+           <Link href="/menu"> <button
               className="mt-8 flex items-center gap-2
                          bg-yellow-400 text-black
                          px-6 py-3 rounded-lg font-medium
                          hover:bg-yellow-500 transition"
             >
               Order Now <IoCartOutline size={18} />
-            </button>
+            </button></Link>
           </div>
         </div>
 

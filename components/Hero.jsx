@@ -117,6 +117,7 @@
 
 //responsive
 import Image from "next/image";
+import Link from "next/link";
 import { IoCartOutline } from "react-icons/io5";
 
 const Hero = () => {
@@ -221,18 +222,18 @@ const Hero = () => {
         {/* Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row 
                         items-center gap-4 justify-center lg:justify-start">
-          <button className="flex items-center gap-2 
+           <Link href="/menu"> <button className="flex items-center gap-2 
                              bg-yellow-500 text-black 
                              px-6 py-3 rounded-lg font-medium 
                              hover:bg-yellow-600 transition">
-            Order Food <IoCartOutline size={20} />
-          </button>
+          Order Food <IoCartOutline size={20} />
+          </button></Link>
 
-          <button className="border border-yellow-500 text-black 
+         <Link href="/service"><button className="border border-yellow-500 text-black 
                              px-6 py-3 rounded-lg font-medium 
                              hover:bg-yellow-50 transition">
             Learn More
-          </button>
+          </button></Link>
         </div>
       </div>
     </section>

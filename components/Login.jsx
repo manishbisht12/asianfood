@@ -88,8 +88,7 @@ const Login = () => {
           <button
             className="w-full bg-[#ebbc2e] text-black 
                        py-3 rounded-lg font-medium
-                       hover:bg-yellow-500 transition"
-          >
+                       hover:bg-yellow-500 transition" >
             Login Now
           </button>
 

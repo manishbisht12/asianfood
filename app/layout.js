@@ -31,6 +31,7 @@
 
 
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
 import { CartProvider } from "@/context/CartContext";
 
 export default function RootLayout({ children }) {
@@ -38,6 +39,18 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <CartProvider>{children}</CartProvider>
+       <Toaster
+  position="top-center"
+  toastOptions={{
+    pauseOnHover: false,
+    duration: 3000,
+  }}
+  containerStyle={{
+    top: "50%",
+    transform: "translateY(-70%)",
+  }}
+/>
+
       </body>
     </html>
   );

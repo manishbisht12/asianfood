@@ -4,29 +4,50 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function SignupPage() {
+  const router = useRouter();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    mobile: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match");
-      return;
-    }
+    const toastId = toast.loading("Sending OTP...");
 
-    console.log("Signup Data:", form);
-    // 🔗 connect API later
+    try {
+      setLoading(true);
+
+      await axios.post("http://localhost:4000/auth/signup", {
+        name: form.name,
+        email: form.email,
+        mobile: form.mobile,
+      });
+
+      toast.success("OTP sent to your email", { id: toastId });
+      router.push("/verify-otp");
+
+    } catch (err) {
+      toast.error(
+        err.response?.data?.message || "Something went wrong",
+        { id: toastId }
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -36,18 +57,16 @@ export default function SignupPage() {
       <section className="px-6 sm:px-10 lg:px-16 py-20 min-h-[80vh] flex items-center justify-center bg-[#FBF1D6]">
         <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 sm:p-10">
 
-          {/* ===== TITLE ===== */}
           <h1 className="text-3xl font-bold text-center text-black">
-            Create Account 
+            Create Account
           </h1>
           <p className="text-gray-600 text-center mt-2">
-            Join us and start ordering delicious food
+            Enter your email and mobile number to receive OTP
           </p>
 
-          {/* ===== FORM ===== */}
           <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
-            {/* Name */}
+            {/*Name */}
             <div>
               <label className="block text-sm font-medium text-black mb-2">
                 Full Name
@@ -57,9 +76,9 @@ export default function SignupPage() {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Enter your name"
+                placeholder="Enter your full name"
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 
+                className="w-full border border-gray-300 rounded-lg px-4 py-3
                            focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
@@ -76,41 +95,25 @@ export default function SignupPage() {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 
+                className="w-full border border-gray-300 rounded-lg px-4 py-3
                            focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
 
-            {/* Password */}
+            {/* Mobile */}
             <div>
               <label className="block text-sm font-medium text-black mb-2">
-                Password
+                Mobile Number
               </label>
               <input
-                type="password"
-                name="password"
-                value={form.password}
+                type="tel"
+                name="mobile"
+                value={form.mobile}
                 onChange={handleChange}
-                placeholder="Create a password"
+                placeholder="Enter your mobile number"
                 required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 
-                           focus:outline-none focus:ring-2 focus:ring-yellow-400"
-              />
-            </div>
-
-            {/* Confirm Password */}
-            <div>
-              <label className="block text-sm font-medium text-black mb-2">
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                placeholder="Confirm your password"
-                required
-                className="w-full border border-gray-300 rounded-lg px-4 py-3 
+                maxLength={10}
+                className="w-full border border-gray-300 rounded-lg px-4 py-3
                            focus:outline-none focus:ring-2 focus:ring-yellow-400"
               />
             </div>
@@ -118,22 +121,23 @@ export default function SignupPage() {
             {/* Button */}
             <button
               type="submit"
-              className="w-full bg-yellow-400 text-black py-3 rounded-lg 
-                         font-semibold hover:bg-yellow-500 transition"
+              disabled={loading}
+              className="w-full bg-yellow-400 text-black py-3 rounded-lg
+                         font-semibold hover:bg-yellow-500 transition
+                         disabled:opacity-70 disabled:cursor-not-allowed"
             >
-              Sign Up
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin"></div>
+                  <span>Sending OTP...</span>
+                </div>
+              ) : (
+                "Send OTP"
+              )}
             </button>
           </form>
 
-          {/* Divider */}
-          <div className="my-6 flex items-center gap-3">
-            <div className="flex-1 h-px bg-gray-300"></div>
-            <span className="text-sm text-gray-500">OR</span>
-            <div className="flex-1 h-px bg-gray-300"></div>
-          </div>
-
-          {/* Login Redirect */}
-          <p className="text-center text-sm text-gray-600">
+          <p className="text-center text-sm text-gray-600 mt-6">
             Already have an account?{" "}
             <Link
               href="/login"
