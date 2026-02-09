@@ -48,14 +48,14 @@ export default function CartPage() {
             <div className="lg:col-span-2 space-y-6">
               {items.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6
                              bg-white rounded-2xl p-6 shadow-sm relative group"
                 >
                   {/* Product Info */}
                   <div className="flex items-center gap-5">
                     <Image
-                      src={item.img}
+                      src={item.image}
                       alt={item.title}
                       width={90}
                       height={90}
@@ -66,7 +66,7 @@ export default function CartPage() {
                         {item.title}
                       </h3>
                       <p className="text-gray-500 mt-1 font-medium">
-                        ${item.price.toFixed(2)}
+                        ₹{item.price.toFixed(2)}
                       </p>
                     </div>
                   </div>
@@ -76,7 +76,7 @@ export default function CartPage() {
                     {/* Quantity Controls */}
                     <div className="flex items-center bg-gray-100 rounded-full px-3 py-1.5">
                       <button
-                        onClick={() => decreaseQty(item.id)}
+                        onClick={() => decreaseQty(item._id)}
                         className="text-lg font-bold px-2 hover:text-yellow-600 transition"
                       >
                         −
@@ -85,7 +85,7 @@ export default function CartPage() {
                         {item.qty}
                       </span>
                       <button
-                        onClick={() => increaseQty(item.id)}
+                        onClick={() => increaseQty(item._id)}
                         className="text-lg font-bold px-2 hover:text-yellow-600 transition"
                       >
                         +
@@ -94,12 +94,12 @@ export default function CartPage() {
 
                     {/* Subtotal Price */}
                     <p className="font-bold text-lg text-black min-w-[80px] text-right">
-                      ${(item.price * item.qty).toFixed(2)}
+                      ₹{(item.price * item.qty).toFixed(2)}
                     </p>
 
                     {/* ✅ REMOVE BUTTON (Delete Icon) */}
                     <button
-                      onClick={() => removeFromCart(item.id)}
+                      onClick={() => removeFromCart(item._id)}
                       className="text-red-500 hover:bg-red-50 p-2 rounded-full transition-all duration-200"
                       title="Remove item"
                     >
@@ -129,7 +129,7 @@ export default function CartPage() {
               <div className="border-t pt-4 flex justify-between items-center mb-8">
                 <span className="text-lg font-semibold text-black">Total</span>
                 <span className="text-2xl font-bold text-black">
-                  ${total.toFixed(2)}
+                  ₹{total.toFixed(2)}
                 </span>
               </div>
 
