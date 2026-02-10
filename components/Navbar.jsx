@@ -131,8 +131,6 @@
 
 // export default Navbar;
 
-
-
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -145,6 +143,7 @@ import { HiMenu, HiX } from "react-icons/hi";
 import { useRouter } from "next/navigation";
 import { MdLogout } from "react-icons/md";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { io } from "socket.io-client";
 
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -155,12 +154,38 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const [profileOpen, setProfileOpen] = useState(false);
   const [authLoading, setAuthLoading] = useState(true);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [search, setSearch] = useState("");
+  const [results, setResults] = useState([]);
+
 
   const { cartCount } = useCart();
   const router = useRouter();
 
   const prevCountRef = useRef(cartCount);
   const profileRef = useRef(null);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+  if (!search.trim()) {
+    setResults([]);
+    return;
+  }
+
+  const delay = setTimeout(async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/api/search?q=${search}`
+      );
+      setResults(res.data.foods || []);
+    } catch (err) {
+      setResults([]);
+    }
+  }, 400); // debounce
+
+  return () => clearTimeout(delay);
+}, [search]);
+
 
   useEffect(() => {
     if (cartCount > prevCountRef.current) {
@@ -193,6 +218,42 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    socketRef.current = io("http://localhost:4000", {
+      withCredentials: true,
+    });
+
+    socketRef.current.on("newFood", (food) => {
+      const existing =
+        JSON.parse(localStorage.getItem("food_notifications")) || [];
+
+      const exists = existing.find((n) => n._id === food._id);
+      if (exists) return;
+
+      const updated = [food, ...existing].slice(0, 20);
+
+      localStorage.setItem("food_notifications", JSON.stringify(updated));
+
+      setNotificationCount(updated.length);
+
+      window.dispatchEvent(new Event("notificationsUpdated"));
+
+      toast.success(`New food added: ${food.title}`);
+    });
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("food_notifications")) || [];
+
+    setNotificationCount(stored.length);
+  }, []);
+
+  useEffect(() => {
     const close = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
         setProfileOpen(false);
@@ -209,6 +270,12 @@ const Navbar = () => {
         {},
         { withCredentials: true },
       );
+
+      //3 remove all  notification  when  user logout
+      localStorage.removeItem("food_notifications");
+      localStorage.removeItem("notifications_seen");
+      setNotificationCount(0);
+
       setUser(null);
 
       setProfileOpen(false);
@@ -266,7 +333,48 @@ const Navbar = () => {
 
         {/* ================= DESKTOP ACTIONS ================= */}
         <div className="hidden lg:flex items-center gap-6 text-xl text-black">
-          <IoMdSearch className="cursor-pointer hover:text-[#F1C74E] transition" />
+          <div className="relative">
+  <div className="flex items-center bg-white border rounded-2xl px-3 py-1">
+    <IoMdSearch className="text-gray-500" />
+    <input
+      type="text"
+      placeholder="Search food..."
+      value={search}
+      onChange={(e) => setSearch(e.target.value)}
+      className="ml-2 outline-none text-sm w-30"
+    />
+  </div>
+
+  {/* SEARCH RESULT DROPDOWN */}
+  {results.length > 0 && (
+    <div className="absolute top-12 left-0 w-72 bg-white shadow-lg rounded-xl z-50 overflow-hidden">
+      {results.map((item) => (
+        <div
+          key={item._id}
+          onClick={() => {
+            router.push(`/menu#${item._id}`);
+            setResults([]);
+            setSearch("");
+          }}
+          className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100"
+        >
+          <Image
+            src={item.image}
+            alt={item.title}
+            width={40}
+            height={40}
+            className="rounded-md object-cover"
+          />
+          <div>
+            <p className="text-sm font-medium">{item.title}</p>
+            <p className="text-xs text-gray-500">₹{item.price}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
           <Link
             href="/cart"
@@ -281,7 +389,26 @@ const Navbar = () => {
             )}
           </Link>
 
-          <IoIosNotificationsOutline className="cursor-pointer hover:text-[#F1C74E] transition" />
+
+          {user && (
+            <Link
+              href="/notification"
+              className="relative"
+              onClick={() => setNotificationCount(0)}
+            >
+              <IoIosNotificationsOutline className="cursor-pointer hover:text-[#F1C74E] transition" />
+
+              {notificationCount > 0 && (
+                <span
+                  className="absolute -top-2 -right-2 bg-red-500 text-white 
+      text-[9px] rounded-full h-4 w-4 flex items-center 
+      justify-center font-bold border border-white"
+                >
+                  {notificationCount}
+                </span>
+              )}
+            </Link>
+          )}
 
           {/*  RESTORED: Original Login Style */}
           {authLoading ? null : user ? (
@@ -309,12 +436,14 @@ const Navbar = () => {
 
               {profileOpen && (
                 <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md">
-                  <p className="px-4 py-2 border-b font-medium">{user.name}</p>
+                  <p className="px-7 py-2 border-b font-medium text-base">
+                    {user.name}
+                  </p>
 
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center gap-4 px-4 py-2
-          text-red-500 hover:bg-red-50"
+          text-red-500 hover:bg-red-50 text-base font-semibold"
                   >
                     <MdLogout size={18} />
                     <span>Logout</span>

@@ -6,7 +6,15 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { useCart } from "@/context/CartContext";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 
-const categories = ["All", "Soup", "Drink", "Spicy", "Tradition", "Sweet", "Cake"];
+const categories = [
+  "All",
+  "Soup",
+  "Drink",
+  "Spicy",
+  "Tradition",
+  "Sweet",
+  "Cake",
+];
 
 const Food = () => {
   const { addToCart, cart, increaseQty, decreaseQty } = useCart();
@@ -14,7 +22,7 @@ const Food = () => {
   const [foods, setFoods] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ FETCH FROM API
+  // FETCH FOODS
   useEffect(() => {
     const fetchFoods = async () => {
       try {
@@ -31,10 +39,14 @@ const Food = () => {
     fetchFoods();
   }, []);
 
+  // FILTER BY CATEGORY
   const filteredFoods =
     selectedCategory === "All"
       ? foods
       : foods.filter((food) => food.category === selectedCategory);
+
+  // SHOW ONLY 8 ITEMS
+  const visibleFoods = filteredFoods.slice(0, 8);
 
   return (
     <section className="px-6 sm:px-10 lg:px-16 py-16">
@@ -77,10 +89,9 @@ const Food = () => {
       {/* FOOD GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {!loading &&
-          filteredFoods.map((item) => {
+          visibleFoods.map((item) => {
             const cartItem = cart[item._id];
 
-            // ✅ SAFE IMAGE
             const imageSrc =
               item.image && item.image.trim() !== ""
                 ? item.image
@@ -116,7 +127,6 @@ const Food = () => {
                     ₹{Number(item.price).toFixed(2)}
                   </span>
 
-                  {/* CART CONTROLS */}
                   {cartItem ? (
                     <div className="flex items-center bg-yellow-400 rounded-full overflow-hidden shadow-sm">
                       <button
@@ -151,7 +161,7 @@ const Food = () => {
           })}
       </div>
 
-      {!loading && filteredFoods.length === 0 && (
+      {!loading && visibleFoods.length === 0 && (
         <div className="text-center text-gray-400 py-10">
           No items found in this category.
         </div>
