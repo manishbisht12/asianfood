@@ -201,11 +201,11 @@ const Navbar = () => {
     const fetchUser = async () => {
       try {
         setAuthLoading(true);
-        
+
         const res = await axios.get("http://localhost:4000/auth/me", {
           withCredentials: true,
         });
-          
+
         setUser(res.data.user || null);
       } catch (err) {
         setUser(null);
@@ -298,21 +298,31 @@ const Navbar = () => {
 
   return (
     /* Glassmorphism to match the torch theme background */
-    <nav className="sticky top-0 z-[100] px-6 lg:px-16 py-6 bg-white/70 backdrop-blur-md">
+    <nav className="sticky top-0 z-[100] px-4 sm:px-6 lg:px-16 py-4 lg:py-6 bg-white/70 backdrop-blur-md">
       <div className="flex items-center justify-between">
-        {/* ================= LOGO ================= */}
-        <Link href="/" className="cursor-pointer">
+
+        {/* ================= 1. MOBILE MENU ICON (LEFT) ================= */}
+        <div
+          className="lg:hidden text-3xl cursor-pointer order-1"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <HiX /> : <HiMenu />}
+        </div>
+
+        {/* ================= 2. LOGO (CENTER MOBILE, LEFT DESKTOP) ================= */}
+        <Link href="/" className="cursor-pointer order-2 lg:order-1">
           <Image
             src="/asianfood.png"
             alt="Asianfood Logo"
-            width={180}
-            height={45}
+            width={140}
+            height={35}
             priority
+            className="w-[120px] sm:w-[150px] lg:w-[180px] h-auto"
           />
         </Link>
 
-        {/* ================= DESKTOP MENU ================= */}
-        <ul className="hidden lg:flex items-center gap-10 text-black font-medium">
+        {/* ================= 3. DESKTOP MENU ================= */}
+        <ul className="hidden lg:flex items-center gap-10 text-black font-medium order-2 mx-auto">
           {["Home", "Menu", "Service", "Contact"].map((item) => (
             <li key={item}>
               <Link
@@ -324,16 +334,17 @@ const Navbar = () => {
                 className="relative group transition duration-300"
               >
                 {item}
-
                 <span className="absolute left-0 bottom-[-4px] w-0 h-[2px] bg-[#F1C74E] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* ================= DESKTOP ACTIONS ================= */}
-        <div className="hidden lg:flex items-center gap-6 text-xl text-black">
-          <div className="relative">
+        {/* ================= 4. ACTIONS (RIGHT) ================= */}
+        <div className="flex items-center gap-3 lg:gap-6 text-xl text-black order-3 lg:order-3">
+
+          {/* SEARCH (Hidden on Mobile) */}
+          <div className="hidden lg:block relative">
             <div className="flex items-center bg-white border rounded-2xl px-3 py-1">
               <IoMdSearch className="text-gray-500" />
               <input
@@ -348,7 +359,7 @@ const Navbar = () => {
             {/* SEARCH RESULT DROPDOWN */}
             {results.length > 0 && (
               <div className="absolute top-12 left-0 w-72 bg-white shadow-lg rounded-xl z-50 overflow-hidden">
-                {results.map((item) => (
+                {results.slice(0, 5).map((item) => (
                   <div
                     key={item._id}
                     onClick={() => {
@@ -375,13 +386,13 @@ const Navbar = () => {
             )}
           </div>
 
-
+          {/* CART (Visible on Both) */}
           <Link
             href="/cart"
             onClick={handleCartClick}
             className="relative cursor-pointer hover:text-[#F1C74E] transition-colors"
           >
-            <IoCartOutline size={20} />
+            <IoCartOutline size={22} />
             {showBadge && cartCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] rounded-full h-4 w-4 flex items-center justify-center font-bold border border-white">
                 {cartCount}
@@ -389,14 +400,14 @@ const Navbar = () => {
             )}
           </Link>
 
-
+          {/* NOTIFICATIONS (User only) */}
           {user && (
             <Link
               href="/notification"
               className="relative"
               onClick={() => setNotificationCount(0)}
             >
-              <IoIosNotificationsOutline className="cursor-pointer hover:text-[#F1C74E] transition" />
+              <IoIosNotificationsOutline size={22} className="cursor-pointer hover:text-[#F1C74E] transition" />
 
               {notificationCount > 0 && (
                 <span
@@ -410,7 +421,7 @@ const Navbar = () => {
             </Link>
           )}
 
-          {/*  RESTORED: Original Login Style */}
+          {/* AUTH (User Avatar or Login) */}
           {authLoading ? null : user ? (
             //  USER LOGGED IN → AVATAR
             <div ref={profileRef} className="relative">
@@ -419,15 +430,15 @@ const Navbar = () => {
                 className="relative cursor-pointer"
               >
                 <div
-                  className="w-10 h-10 rounded-full bg-[#F1C74E]
+                  className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#F1C74E]
         text-black font-bold flex items-center
-        justify-center uppercase"
+        justify-center uppercase text-sm sm:text-base"
                 >
                   {user.name?.charAt(0)}
                 </div>
 
                 <MdKeyboardArrowDown
-                  size={18}
+                  size={16}
                   className={`absolute -bottom-1 -right-1 bg-white rounded-full
         transition-transform duration-200
         ${profileOpen ? "rotate-180" : ""}`}
@@ -435,8 +446,8 @@ const Navbar = () => {
               </div>
 
               {profileOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md">
-                  <p className="px-7 py-2 border-b font-medium text-base">
+                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50">
+                  <p className="px-7 py-2 border-b font-medium text-base truncate">
                     {user.name}
                   </p>
 
@@ -455,28 +466,64 @@ const Navbar = () => {
             //  USER NOT LOGGED IN → LOGIN BUTTON
             <Link href="/login">
               <button
-                className="ml-4 px-6 py-2 border border-[#F1C74E] 
+                className="hidden lg:block ml-4 px-6 py-2 border border-[#F1C74E] 
     text-[#F1C74E] rounded-full font-medium 
     hover:bg-[#F1C74E] hover:text-white transition-all"
               >
                 Login
               </button>
+              {/* Mobile Login Icon/Text */}
+              <span className="lg:hidden text-sm font-bold text-[#F1C74E]">Login</span>
             </Link>
           )}
         </div>
-
-        {/* ================= MOBILE MENU ICON ================= */}
-        <div
-          className="lg:hidden text-3xl cursor-pointer"
-          onClick={() => setOpen(!open)}
-        >
-          {open ? <HiX /> : <HiMenu />}
-        </div>
       </div>
 
-      {/* ================= MOBILE MENU ================= */}
+      {/* ================= MOBILE MENU DROPDOWN ================= */}
       {open && (
-        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-t p-6 shadow-xl">
+        <div className="lg:hidden absolute top-full left-0 w-full bg-white border-t p-6 shadow-xl z-40">
+          {/* SEARCH BAR FOR MOBILE */}
+          <div className="flex items-center bg-gray-100 border rounded-xl px-3 py-2 mb-6">
+            <IoMdSearch className="text-gray-500 text-xl" />
+            <input
+              type="text"
+              placeholder="Search food..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="ml-2 outline-none text-base w-full bg-transparent"
+            />
+          </div>
+
+          {/* SEARCH RESULTS MOBILE */}
+          {results.length > 0 && (
+            <div className="mb-6 bg-white shadow-sm rounded-xl overflow-hidden border">
+              {results.slice(0, 5).map((item) => (
+                <div
+                  key={item._id}
+                  onClick={() => {
+                    router.push(`/menu#${item._id}`);
+                    setResults([]);
+                    setSearch("");
+                    setOpen(false);
+                  }}
+                  className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={40}
+                    height={40}
+                    className="rounded-md object-cover"
+                  />
+                  <div>
+                    <p className="text-sm font-medium">{item.title}</p>
+                    <p className="text-xs text-gray-500">₹{item.price}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           <ul className="flex flex-col gap-6 text-black font-medium">
             <li onClick={handleLinkClick}>
               <Link href="/">Home</Link>
@@ -492,61 +539,19 @@ const Navbar = () => {
             </li>
           </ul>
 
-          <div className="flex items-center gap-8 text-2xl mt-8 pt-6 border-t">
-            <IoMdSearch />
-            <Link href="/cart" onClick={handleCartClick} className="relative">
-              <IoCartOutline size={20} />
-              {showBadge && cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
-            <IoIosNotificationsOutline />
-          </div>
-
-          {authLoading ? null : user ? (
-            //  LOGGED IN → SHOW USER + LOGOUT
+          {user && (
             <div className="mt-8 border-t pt-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full bg-[#F1C74E] 
-        text-black font-bold flex items-center justify-center uppercase"
-                  >
-                    {user.name?.charAt(0)}
-                  </div>
-
-                  <span className="font-medium text-black">{user.name}</span>
-                </div>
-
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    handleLinkClick();
-                  }}
-                  className="flex items-center gap-3 text-red-500 font-medium"
-                >
-                  <MdLogout size={18} />
-                  <span>Logout</span>
-                </button>
-              </div>
-            </div>
-          ) : (
-            //  NOT LOGGED IN → LOGIN
-            <Link
-              href="/login"
-              onClick={handleLinkClick}
-              className="block mt-8"
-            >
               <button
-                className="w-full px-5 py-4 border border-[#F1C74E] 
-    text-[#F1C74E] rounded-xl font-bold 
-    hover:bg-[#F1C74E] hover:text-white transition-all"
+                onClick={() => {
+                  handleLogout();
+                  handleLinkClick();
+                }}
+                className="flex items-center gap-3 text-red-500 font-medium w-full"
               >
-                Login
+                <MdLogout size={20} />
+                <span>Logout</span>
               </button>
-            </Link>
+            </div>
           )}
         </div>
       )}
