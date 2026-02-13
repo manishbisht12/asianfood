@@ -130,7 +130,7 @@ const Hero = () => {
 
         {/* Background */}
         <Image
-          src="/Ellipse 6.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985866/Ellipse_6_wapfb6.png"
           alt="Ellipse background"
           fill
           priority
@@ -139,7 +139,7 @@ const Hero = () => {
 
         {/* Main Plate */}
         <Image
-          src="/plate.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985922/plate_y6xnt2.png"
           alt="Main plate"
           width={380}
           height={380}
@@ -148,7 +148,7 @@ const Hero = () => {
 
         {/* Decorations */}
         <Image
-          src="/c1.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985845/c1_wxx8li.png"
           alt="Decoration 1"
           width={163}
           height={159}
@@ -156,7 +156,7 @@ const Hero = () => {
         />
 
         <Image
-          src="/c2.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985828/c2_l9dbvh.png"
           alt="Decoration 2"
           width={120}
           height={110}
@@ -164,7 +164,7 @@ const Hero = () => {
         />
 
         <Image
-          src="/c3.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985851/c3_weotou.png"
           alt="Decoration 3"
           width={110}
           height={100}
@@ -172,7 +172,7 @@ const Hero = () => {
         />
 
         <Image
-          src="/c4.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985857/c4_b4mk67.png"
           alt="Decoration 4"
           width={130}
           height={128}
@@ -181,21 +181,21 @@ const Hero = () => {
 
         {/* Top Ellipses */}
         <Image
-          src="/Ellipse 7.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985874/Ellipse_7_ielz8m.png"
           alt="Ellipse 7"
           width={30}
           height={44}
           className="absolute top-[-6%] left-[10%] z-50"
         />
         <Image
-          src="/Ellipse 8.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985880/Ellipse_8_gq6zqr.png"
           alt="Ellipse 8"
           width={30}
           height={44}
           className="absolute top-[-20%] left-[26%] z-50"
         />
         <Image
-          src="/Ellipse 9.png"
+          src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985887/Ellipse_9_n70hn2.png"
           alt="Ellipse 9"
           width={30}
           height={44}
@@ -213,7 +213,7 @@ const Hero = () => {
           And Get New Experiences With Asian Food
         </h1>
 
-        <p  className="mt-6 text-gray-600 leading-relaxed">
+        <p className="mt-6 text-gray-600 leading-relaxed">
           Exploring new food with different transition from all Asian country
           especially from Cambodia that you can try at this place and get a
           good price from us as well we will make a good impact to our customers.
@@ -222,14 +222,14 @@ const Hero = () => {
         {/* Buttons */}
         <div className="mt-8 flex flex-col sm:flex-row 
                         items-center gap-4 justify-center lg:justify-start">
-           <Link href="/menu"> <button className="flex items-center gap-2 
+          <Link href="/menu"> <button className="flex items-center gap-2 
                              bg-yellow-500 text-black 
                              px-6 py-3 rounded-lg font-medium 
                              hover:bg-yellow-600 transition">
-          Order Food <IoCartOutline size={20} />
+            Order Food <IoCartOutline size={20} />
           </button></Link>
 
-         <Link href="/service"><button className="border border-yellow-500 text-black 
+          <Link href="/service"><button className="border border-yellow-500 text-black 
                              px-6 py-3 rounded-lg font-medium 
                              hover:bg-yellow-50 transition">
             Learn More

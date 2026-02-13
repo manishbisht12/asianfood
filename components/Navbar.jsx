@@ -167,24 +167,24 @@ const Navbar = () => {
   const socketRef = useRef(null);
 
   useEffect(() => {
-  if (!search.trim()) {
-    setResults([]);
-    return;
-  }
-
-  const delay = setTimeout(async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:4000/api/search?q=${search}`
-      );
-      setResults(res.data.foods || []);
-    } catch (err) {
+    if (!search.trim()) {
       setResults([]);
+      return;
     }
-  }, 400); // debounce
 
-  return () => clearTimeout(delay);
-}, [search]);
+    const delay = setTimeout(async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:4000/api/search?q=${search}`
+        );
+        setResults(res.data.foods || []);
+      } catch (err) {
+        setResults([]);
+      }
+    }, 400); // debounce
+
+    return () => clearTimeout(delay);
+  }, [search]);
 
 
   useEffect(() => {
@@ -201,12 +201,12 @@ const Navbar = () => {
     const fetchUser = async () => {
       try {
         setAuthLoading(true);
-
-        const res = await axios.get("http://localhost:4000/auth/users", {
+        
+        const res = await axios.get("http://localhost:4000/auth/me", {
           withCredentials: true,
         });
-
-        setUser(res.data.users[0] || null);
+          
+        setUser(res.data.user || null);
       } catch (err) {
         setUser(null);
       } finally {
@@ -334,46 +334,46 @@ const Navbar = () => {
         {/* ================= DESKTOP ACTIONS ================= */}
         <div className="hidden lg:flex items-center gap-6 text-xl text-black">
           <div className="relative">
-  <div className="flex items-center bg-white border rounded-2xl px-3 py-1">
-    <IoMdSearch className="text-gray-500" />
-    <input
-      type="text"
-      placeholder="Search food..."
-      value={search}
-      onChange={(e) => setSearch(e.target.value)}
-      className="ml-2 outline-none text-sm w-30"
-    />
-  </div>
+            <div className="flex items-center bg-white border rounded-2xl px-3 py-1">
+              <IoMdSearch className="text-gray-500" />
+              <input
+                type="text"
+                placeholder="Search food..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="ml-2 outline-none text-sm w-30"
+              />
+            </div>
 
-  {/* SEARCH RESULT DROPDOWN */}
-  {results.length > 0 && (
-    <div className="absolute top-12 left-0 w-72 bg-white shadow-lg rounded-xl z-50 overflow-hidden">
-      {results.map((item) => (
-        <div
-          key={item._id}
-          onClick={() => {
-            router.push(`/menu#${item._id}`);
-            setResults([]);
-            setSearch("");
-          }}
-          className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100"
-        >
-          <Image
-            src={item.image}
-            alt={item.title}
-            width={40}
-            height={40}
-            className="rounded-md object-cover"
-          />
-          <div>
-            <p className="text-sm font-medium">{item.title}</p>
-            <p className="text-xs text-gray-500">₹{item.price}</p>
+            {/* SEARCH RESULT DROPDOWN */}
+            {results.length > 0 && (
+              <div className="absolute top-12 left-0 w-72 bg-white shadow-lg rounded-xl z-50 overflow-hidden">
+                {results.map((item) => (
+                  <div
+                    key={item._id}
+                    onClick={() => {
+                      router.push(`/menu#${item._id}`);
+                      setResults([]);
+                      setSearch("");
+                    }}
+                    className="flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-100"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.title}
+                      width={40}
+                      height={40}
+                      className="rounded-md object-cover"
+                    />
+                    <div>
+                      <p className="text-sm font-medium">{item.title}</p>
+                      <p className="text-xs text-gray-500">₹{item.price}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
 
 
           <Link

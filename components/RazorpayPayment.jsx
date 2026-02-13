@@ -37,7 +37,7 @@ const RazorpayPayment = ({
         return;
       }
 
-      // 1️⃣ Create order from backend
+      
       const { data } = await axios.post(
         "http://localhost:4000/payment/order",
         {
