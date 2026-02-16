@@ -312,7 +312,7 @@ const Navbar = () => {
         {/* ================= 2. LOGO (CENTER MOBILE, LEFT DESKTOP) ================= */}
         <Link href="/" className="cursor-pointer order-2 lg:order-1">
           <Image
-            src="/asianfood.png"
+            src="/Asianfood.png"
             alt="Asianfood Logo"
             width={140}
             height={35}
