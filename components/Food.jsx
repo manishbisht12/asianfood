@@ -43,7 +43,7 @@ const Food = () => {
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const res = await fetch("http://localhost:4000/api/foods");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/foods`);
         const data = await res.json();
         setFoods(data.foods || []);
       } catch (err) {
@@ -51,7 +51,7 @@ const Food = () => {
       } finally {
         setLoading(false);
       }
-    };
+    }; 
 
     fetchFoods();
   }, []);

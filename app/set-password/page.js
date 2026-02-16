@@ -41,7 +41,7 @@ export default function SetPasswordPage() {
       setLoading(true);
       
 
-      await axios.post("http://localhost:4000/auth/set-password", {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/set-password`, {
         password: form.password,
         confirmPassword: form.confirmPassword,
       });

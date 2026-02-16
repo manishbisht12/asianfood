@@ -175,7 +175,7 @@ const Navbar = () => {
     const delay = setTimeout(async () => {
       try {
         const res = await axios.get(
-          `http://localhost:4000/api/search?q=${search}`
+          `${process.env.NEXT_PUBLIC_API_URL}/api/search?q=${search}`
         );
         setResults(res.data.foods || []);
       } catch (err) {
@@ -202,7 +202,7 @@ const Navbar = () => {
       try {
         setAuthLoading(true);
 
-        const res = await axios.get("http://localhost:4000/auth/me", {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
           withCredentials: true,
         });
 
@@ -218,8 +218,9 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:4000", {
+    socketRef.current = io(process.env.NEXT_PUBLIC_API_URL, {
       withCredentials: true,
+      transports: ["polling"] // force polling to avoid websocket upgrade errors in some hosts
     });
 
     socketRef.current.on("newFood", (food) => {
@@ -266,7 +267,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       await axios.post(
-        "http://localhost:4000/auth/logout",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/logout`,
         {},
         { withCredentials: true },
       );

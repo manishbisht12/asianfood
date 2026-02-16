@@ -199,7 +199,7 @@ export default function VerifyOtpPage() {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:4000/auth/verify-otp", {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/verify-otp`, {
         otp: finalOtp,
       });
 

@@ -33,14 +33,14 @@ export default function MenuPage() {
   useEffect(() => {
     const fetchFoods = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/api/foods");
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/foods`);
         setFoods(res.data.foods);
       } catch (error) {
         console.error("Error fetching foods:", error);
       } finally {
         setLoading(false);
       }
-    };
+    }; 
 
     fetchFoods();
   }, []);

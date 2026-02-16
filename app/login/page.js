@@ -178,8 +178,8 @@ export default function LoginPage() {
 
   /* ================= GOOGLE LOGIN ================= */
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:4000/auth/google";
-  };
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+  }; 
 
   /* ================= FORM HANDLERS ================= */
   const handleChange = (e) => {
@@ -193,7 +193,7 @@ export default function LoginPage() {
       setLoading(true);
 
       await axios.post(
-        "http://localhost:4000/auth/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
         {
           email: form.email,
           password: form.password,

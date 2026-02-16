@@ -28,7 +28,7 @@ export default function CartPage() {
     setMounted(true);
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/auth/users", {
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/users`, {
           withCredentials: true,
         });
         setUser(res.data.users[0] || null);
@@ -218,7 +218,7 @@ export default function CartPage() {
                         setLoading(true);
                         try {
                           const res = await axios.post(
-                            "http://localhost:4000/order/cod",
+                            `${process.env.NEXT_PUBLIC_API_URL}/order/cod`,
                             {
                               userId: user._id,
                               items,

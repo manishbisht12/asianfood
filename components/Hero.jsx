@@ -142,8 +142,9 @@ const Hero = () => {
             src="https://res.cloudinary.com/dsqgprncd/image/upload/v1770985866/Ellipse_6_wapfb6.png"
             alt="Ellipse background"
             fill
+            sizes="(max-width: 640px) 320px, (max-width: 1024px) 380px, 428px"
             priority
-            className="object-contain"
+            className="object-contain w-auto h-auto"
           />
         </motion.div>
 
@@ -160,6 +161,7 @@ const Hero = () => {
             alt="Main plate"
             width={380}
             height={380}
+            className="w-auto h-auto"
           />
         </motion.div>
 
@@ -174,6 +176,7 @@ const Hero = () => {
             alt="Decoration 1"
             width={163}
             height={159}
+            className="w-auto h-auto"
           />
         </motion.div>
 
@@ -187,6 +190,7 @@ const Hero = () => {
             alt="Decoration 2"
             width={120}
             height={110}
+            className="w-auto h-auto"
           />
         </motion.div>
 
@@ -200,6 +204,7 @@ const Hero = () => {
             alt="Decoration 3"
             width={110}
             height={100}
+            className="w-auto h-auto"
           />
         </motion.div>
 
@@ -213,6 +218,7 @@ const Hero = () => {
             alt="Decoration 4"
             width={130}
             height={128}
+            className="w-auto h-auto"
           />
         </motion.div>
 
@@ -227,6 +233,7 @@ const Hero = () => {
             alt="Ellipse 7"
             width={30}
             height={44}
+            className="w-auto h-auto"
           />
         </motion.div>
 
@@ -240,6 +247,7 @@ const Hero = () => {
             alt="Ellipse 8"
             width={30}
             height={44}
+            className="w-auto h-auto"
           />
         </motion.div>
 

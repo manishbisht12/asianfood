@@ -149,7 +149,8 @@ export default function ServicePage() {
                       src={reviews[currentReview].img} 
                       alt={reviews[currentReview].name}
                       fill
-                      className="object-cover"
+                      sizes="56px"
+                      className="object-cover w-auto h-auto"
                     />
                   </div>
                   <div>

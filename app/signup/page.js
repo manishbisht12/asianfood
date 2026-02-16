@@ -193,7 +193,7 @@ export default function SignupPage() {
     try {
       setLoading(true);
 
-      await axios.post("http://localhost:4000/auth/signup", {
+      await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/signup`, {
         name: form.name,
         email: form.email,
         mobile: form.mobile,
@@ -215,7 +215,7 @@ export default function SignupPage() {
   /* ================= GOOGLE SIGNUP ================= */
   const handleGoogleSignup = () => {
     // 🔥 Direct redirect to backend Google OAuth
-    window.location.href = "http://localhost:4000/auth/google";
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`; 
   };
 
   return (

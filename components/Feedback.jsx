@@ -17,7 +17,7 @@ const Feedback = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await axios.get("http://localhost:4000/review");
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/review`);
         setAllReviews(res.data.data);
       } catch (error) {
         toast.error("Failed to load reviews");
@@ -40,7 +40,7 @@ const Feedback = () => {
       setSubmitting(true);
 
       const res = await axios.post(
-        "http://localhost:4000/review",
+        `${process.env.NEXT_PUBLIC_API_URL}/review`,
         { review, rating },
         { withCredentials: true } 
       );
