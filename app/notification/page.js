@@ -168,8 +168,7 @@ const groupedNotifications = notifications.reduce((groups, item) => {
                   src={item.image}
                   alt={item.title}
                   fill
-                  sizes="96px"
-                  className="object-contain rounded-lg w-auto h-auto"
+                  className="object-contain rounded-lg"
                 />
               </div>
 

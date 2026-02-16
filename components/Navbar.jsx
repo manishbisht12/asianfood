@@ -220,7 +220,6 @@ const Navbar = () => {
   useEffect(() => {
     socketRef.current = io(process.env.NEXT_PUBLIC_API_URL, {
       withCredentials: true,
-      transports: ["polling"] // force polling to avoid websocket upgrade errors in some hosts
     });
 
     socketRef.current.on("newFood", (food) => {
