@@ -31,7 +31,7 @@ const Order = () => {
     ">
       {/* SECTION TITLE */}
       <div className="text-center mb-14">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">How You Can Order</h2>
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold">How You can Order</h2>
         <div className="w-20 h-1 bg-yellow-400 mx-auto mt-3 rounded"></div>
       </div>
 
