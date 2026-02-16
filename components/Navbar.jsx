@@ -473,7 +473,7 @@ const Navbar = () => {
                 Login
               </button>
               {/* Mobile Login Icon/Text */}
-              <span className="lg:hidden text-sm font-bold text-[#F1C74E]">Login</span>
+              <span className="lg:hidden text-sm font-bold text-[#F1C74E] border border-[#F1C74E] px-4 py-2 rounded-full">Login</span>
             </Link>
           )}
         </div>
@@ -538,21 +538,6 @@ const Navbar = () => {
               <Link href="/contact">Contact us</Link>
             </li>
           </ul>
-
-          {user && (
-            <div className="mt-8 border-t pt-6">
-              <button
-                onClick={() => {
-                  handleLogout();
-                  handleLinkClick();
-                }}
-                className="flex items-center gap-3 text-red-500 font-medium w-full"
-              >
-                <MdLogout size={20} />
-                <span>Logout</span>
-              </button>
-            </div>
-          )}
         </div>
       )}
     </nav>
