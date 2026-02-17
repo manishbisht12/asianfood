@@ -103,7 +103,7 @@ const Footer = () => {
         {/* ===== LOGO & PAYMENT ===== */}
         <div className="flex flex-col items-center sm:items-start">
           <Image
-            src="/asianfood.png"
+            src="/Asianfood.png"
             alt="Asianfood logo"
             width={160}
             height={40}
