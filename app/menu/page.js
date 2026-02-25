@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa6";
 import { AiOutlineHeart } from "react-icons/ai";
 import { useCart } from "@/context/CartContext";
 import axios from "axios";
+import { ShimmerGrid } from "@/components/ShimmerCard";
 
 const categories = [
   "All",
@@ -40,7 +41,7 @@ export default function MenuPage() {
       } finally {
         setLoading(false);
       }
-    }; 
+    };
 
     fetchFoods();
   }, []);
@@ -110,11 +111,10 @@ export default function MenuPage() {
                   <li
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`cursor-pointer px-4 py-2 rounded-lg text-sm transition ${
-                      activeCategory === cat
+                    className={`cursor-pointer px-4 py-2 rounded-lg text-sm transition ${activeCategory === cat
                         ? "bg-yellow-400 text-black font-medium"
                         : "hover:bg-gray-100 text-gray-700"
-                    }`}
+                      }`}
                   >
                     {cat}
                   </li>
@@ -126,9 +126,7 @@ export default function MenuPage() {
           {/* FOOD GRID */}
           <div className="lg:w-3/4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {loading && (
-              <p className="col-span-full text-center text-gray-500">
-                Loading foods...
-              </p>
+              <ShimmerGrid count={6} variant="menu" />
             )}
 
             {!loading &&
@@ -200,14 +198,9 @@ export default function MenuPage() {
                 );
               })}
 
-            {/* LOADER */}
+            {/* LOADER — Shimmer cards for infinite scroll */}
             {loadingMore && (
-              <div className="col-span-full flex justify-center py-10">
-                <div
-                  className="w-8 h-8 border-4 border-yellow-400 
-                  border-t-transparent rounded-full animate-spin"
-                ></div>
-              </div>
+              <ShimmerGrid count={3} variant="menu" />
             )}
           </div>
         </div>

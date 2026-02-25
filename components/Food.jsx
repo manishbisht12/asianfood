@@ -6,6 +6,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { useCart } from "@/context/CartContext";
 import { FaPlus, FaMinus } from "react-icons/fa6";
 import { motion, AnimatePresence } from "framer-motion";
+import { ShimmerGrid } from "./ShimmerCard";
 
 const categories = [
   "All",
@@ -51,7 +52,7 @@ const Food = () => {
       } finally {
         setLoading(false);
       }
-    }; 
+    };
 
     fetchFoods();
   }, []);
@@ -97,8 +98,8 @@ const Food = () => {
               whileHover={{ scale: 1.05, color: "#FACC15" }}
               whileTap={{ scale: 0.95 }}
               className={`text-sm cursor-pointer px-4 py-1.5 rounded-md transition-all ${selectedCategory === cat
-                  ? "bg-yellow-400 text-white font-bold"
-                  : "text-gray-600"
+                ? "bg-yellow-400 text-white font-bold"
+                : "text-gray-600"
                 }`}
             >
               {cat}
@@ -114,9 +115,11 @@ const Food = () => {
         </motion.div>
       </div>
 
-      {/* LOADING */}
+      {/* SHIMMER LOADING */}
       {loading && (
-        <p className="text-center text-gray-500">Loading foods...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <ShimmerGrid count={8} variant="home" />
+        </div>
       )}
 
       {/* FOOD GRID */}
