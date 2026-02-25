@@ -422,7 +422,7 @@ const Navbar = () => {
           )}
 
           {/* AUTH (User Avatar or Login) */}
-          {authLoading ? null : user ? (
+          {user ? (
             //  USER LOGGED IN → AVATAR
             <div ref={profileRef} className="relative">
               <div
@@ -463,7 +463,7 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            //  USER NOT LOGGED IN → LOGIN BUTTON
+            //  USER NOT LOGGED IN → LOGIN BUTTON (also shown while auth is loading)
             <Link href="/login">
               <button
                 className="hidden lg:block ml-4 px-6 py-2 border border-[#F1C74E] 
